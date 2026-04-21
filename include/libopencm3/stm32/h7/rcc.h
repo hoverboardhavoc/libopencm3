@@ -441,6 +441,8 @@ LGPL License Terms @ref lgpl_license
 
 #define RCC_HSI_BASE_FREQUENCY              64000000UL
 
+extern uint32_t rcc_ahb_frequency;
+
 /** Enumerations for core system/bus clocks for user/driver/system access to base bus clocks
   * not directly associated with a peripheral. */
 enum rcc_clock_source {
@@ -498,10 +500,10 @@ enum rcc_periph_clken {
 	RCC_ETH1MAC     = _REG_BIT(0xD8, 15),
 	RCC_ETH1TX      = _REG_BIT(0xD8, 16),
 	RCC_ETH1RX      = _REG_BIT(0xD8, 17),
-	RCC_USB2OTGHSULPI = _REG_BIT(0xD8, 18),
 	RCC_USB1OTGHS   = _REG_BIT(0xD8, 25),
 	RCC_USB1OTGHSULPI = _REG_BIT(0xD8, 26),
-	RCC_USB2OTGHS  = _REG_BIT(0xD8, 27),
+	RCC_USB2OTGHS   = _REG_BIT(0xD8, 27),
+	RCC_USB2OTGHSULPI = _REG_BIT(0xD8, 28),
 
 	/* AHB2 peripherals */
 	RCC_DCMI        = _REG_BIT(0xDC, 0),

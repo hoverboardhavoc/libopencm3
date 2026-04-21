@@ -15,6 +15,9 @@
 #define HZ_PER_MHZ		 	1000000UL
 #define HZ_PER_KHZ			1000UL
 
+
+uint32_t rcc_ahb_frequency = 96000000;
+
 /* Local private copy of the clock configuration for providing user with clock tree data. */
 static struct {
 	uint32_t sysclk;
@@ -182,6 +185,18 @@ static void rcc_clock_setup_domain3(const struct rcc_pll_config *config)
 		rcc_prediv_3bit_log_div(rcc_clock_tree.hclk, config->ppre4);
 }
 
+static void rcc_clock_setup_cfgr(uint8_t sysclock_src, uint8_t sysclock_sws)
+{
+	uint32_t cfgr_sws = ((RCC_CFGR >> RCC_CFGR_SWS_SHIFT) & RCC_CFGR_SWS_MASK);
+	if (cfgr_sws != sysclock_sws) {
+		/* Domains dividers are all configured, now we can switchover to PLL. */
+		RCC_CFGR = (RCC_CFGR & ~(RCC_CFGR_SW_MASK << RCC_CFGR_SW_SHIFT)) | (sysclock_src << RCC_CFGR_SW_SHIFT);
+		while (cfgr_sws != sysclock_sws) {
+			cfgr_sws = ((RCC_CFGR >> RCC_CFGR_SWS_SHIFT) & RCC_CFGR_SWS_MASK);
+		}
+	}
+}
+
 void rcc_clock_setup_pll(const struct rcc_pll_config *config)
 {
 	/* First, set system clock to utilize HSI, then disable all but HSI. */
@@ -223,11 +238,16 @@ void rcc_clock_setup_pll(const struct rcc_pll_config *config)
 
 	/* TODO: Configure custom kernel mappings. */
 
-	/* Domains dividers are all configured, now we can switchover to PLL. */
-	RCC_CFGR |= RCC_CFGR_SW_PLL1;
-	uint32_t cfgr_sws = ((RCC_CFGR >> RCC_CFGR_SWS_SHIFT) & RCC_CFGR_SWS_MASK);
-	while (cfgr_sws != RCC_CFGR_SWS_PLL1) {
-		cfgr_sws = ((RCC_CFGR >> RCC_CFGR_SWS_SHIFT) & RCC_CFGR_SWS_MASK);
+	switch (config->sysclock_source) {
+	case RCC_PLL:
+		rcc_clock_setup_cfgr(RCC_CFGR_SW_PLL1, RCC_CFGR_SWS_PLL1);
+		break;
+	case RCC_HSE:
+		rcc_clock_setup_cfgr(RCC_CFGR_SW_HSE, RCC_CFGR_SWS_HSE);
+		break;
+	default:
+		cm3_assert_not_reached();
+		return;
 	}
 }
 
