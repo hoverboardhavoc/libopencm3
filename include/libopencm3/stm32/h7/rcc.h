@@ -441,8 +441,6 @@ LGPL License Terms @ref lgpl_license
 
 #define RCC_HSI_BASE_FREQUENCY              64000000UL
 
-extern uint32_t rcc_ahb_frequency;
-
 /** Enumerations for core system/bus clocks for user/driver/system access to base bus clocks
   * not directly associated with a peripheral. */
 enum rcc_clock_source {
