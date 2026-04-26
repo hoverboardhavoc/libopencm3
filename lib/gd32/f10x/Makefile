@@ -36,9 +36,18 @@ ARFLAGS		= rcs
 # STM32F1 by regtrace (see decisions/v0.5/{TIMER,IWDG}.md). Other peripherals
 # (GPIO, RCC, FLASH, USART, DMA, I2C, ADC) follow in subsequent PRs as their
 # share-or-split decisions are made.
+OBJS += gd32f10x_rcc_helpers.o
 OBJS += iwdg_common_all.o
-OBJS += timer_common_all.o
+OBJS += timer_common_all.o timer_common_f0234.o
+OBJS += dma_common_l1f013.o
+OBJS += usart_common_all.o usart_common_f124.o
+OBJS += adc_common_v1.o
+OBJS += i2c_common_v1.o
+OBJS += gpio.o gpio_common_all.o
 
-VPATH += ../:../../cm3:../common:../../stm32/common
+# stm32/f1 contributes the v1-family gpio.c (gpio_set_mode etc.) — required
+# by the GD32F10x port since the v1 GPIO is family-specific code, not in
+# stm32/common/.
+VPATH += ../:../../cm3:../common:../../stm32/common:../../stm32/f1
 
 include ../../Makefile.include

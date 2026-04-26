@@ -40,6 +40,8 @@ OBJS += rcc.o rcc_common_all.o
 OBJS += timer_common_all.o timer_common_f0234.o
 OBJS += dma_common_l1f013.o
 OBJS += usart_common_all.o usart_common_v2.o
+OBJS += adc_common_v1.o
+OBJS += i2c_common_v1.o
 
 VPATH += ../:../../cm3:../common:../../stm32/common
 

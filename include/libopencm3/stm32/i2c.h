@@ -22,6 +22,10 @@
 
 #if defined(STM32F0)
 #       include <libopencm3/stm32/f0/i2c.h>
+#elif defined(GD32F1X0)
+#       include <libopencm3/gd32/f1x0/i2c.h>
+#elif defined(GD32F10X)
+#       include <libopencm3/gd32/f10x/i2c.h>
 #elif defined(STM32F1)
 #       include <libopencm3/stm32/f1/i2c.h>
 #elif defined(STM32F2)
