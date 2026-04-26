@@ -22,6 +22,8 @@
 
 #if defined(STM32F0)
 #       include <libopencm3/stm32/f0/rcc.h>
+#elif defined(GD32F10X)
+#       include <libopencm3/gd32/f10x/rcc.h>
 #elif defined(STM32F1)
 #       include <libopencm3/stm32/f1/rcc.h>
 #elif defined(STM32F2)
