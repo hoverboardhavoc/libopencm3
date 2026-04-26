@@ -650,5 +650,47 @@ void rcc_backupdomain_reset(void)
 	RCC_BDCR &= ~RCC_BDCR_BDRST;
 }
 
+/*---------------------------------------------------------------------------*/
+/** @brief Get the peripheral clock speed for the USART at base specified.
+ *
+ * Provisional implementation: returns the APB bus frequency the USART sits
+ * on. Sufficient for usart_set_baudrate() to compute the BRR divisor.
+ */
+uint32_t rcc_get_usart_clk_freq(uint32_t usart)
+{
+	if (usart == USART1_BASE) {
+		return rcc_apb2_frequency;
+	}
+	return rcc_apb1_frequency;
+}
+
+/*---------------------------------------------------------------------------*/
+/** @brief Get the peripheral clock speed for the Timer at base specified. */
+uint32_t rcc_get_timer_clk_freq(uint32_t timer)
+{
+	if (timer == TIM1_BASE || timer == TIM15_BASE
+	    || timer == TIM16_BASE || timer == TIM17_BASE) {
+		return rcc_apb2_frequency;
+	}
+	return rcc_apb1_frequency;
+}
+
+/*---------------------------------------------------------------------------*/
+/** @brief Get the peripheral clock speed for the I2C at base specified. */
+uint32_t rcc_get_i2c_clk_freq(uint32_t i2c __attribute__((unused)))
+{
+	return rcc_apb1_frequency;
+}
+
+/*---------------------------------------------------------------------------*/
+/** @brief Get the peripheral clock speed for SPI at base specified. */
+uint32_t rcc_get_spi_clk_freq(uint32_t spi)
+{
+	if (spi == SPI1_BASE) {
+		return rcc_apb2_frequency;
+	}
+	return rcc_apb1_frequency;
+}
+
 /**@}*/
 
