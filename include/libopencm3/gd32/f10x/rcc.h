@@ -26,16 +26,13 @@
  * along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LIBOPENCM3_RCC_H
-#define LIBOPENCM3_RCC_H
-
 /* The GD32F10x RCU is largely STM32F1-compatible at the register level. This
- * v0.5 stub forwards to stm32/f1/rcc.h to unblock TIMER + IWDG support; a
- * dedicated regtrace RCC vector + decisions/<version>/RCC.md analysis is
- * planned for a follow-up release before this becomes load-bearing for
- * GD32F10x clock-tree code. Until then, downstream code using anything
- * beyond the basic clock-enable bits should validate against gd-spl traces.
+ * stub forwards to stm32/f1/rcc.h to unblock TIMER + IWDG + USART + I2C +
+ * DMA support; a dedicated regtrace RCC vector + decisions/<version>/RCC.md
+ * analysis is planned for a follow-up release before this becomes
+ * load-bearing for GD32F10x clock-tree code.
+ *
+ * NOTE: no header guard on this side — stm32/f1/rcc.h has its own
+ * LIBOPENCM3_RCC_H guard, and a duplicate would no-op the include.
  */
 #include <libopencm3/stm32/f1/rcc.h>
-
-#endif
