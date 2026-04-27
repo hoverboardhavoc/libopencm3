@@ -81,7 +81,18 @@ const struct rcc_clock_scale rcc_hsi_configs[] = {
 		.ahb_frequency	= 64000000,
 		.apb1_frequency = 32000000,
 		.apb2_frequency = 64000000,
-	}
+	},
+	{ /* 72MHz — IRC8M / 2 * 18; requires PLLMF[4] (GD-only). */
+		.pllmul = RCC_CFGR_PLLMUL_PLL_CLK_MUL18,
+		.hpre = RCC_CFGR_HPRE_NODIV,
+		.ppre1 = RCC_CFGR_PPRE_DIV2,
+		.ppre2 = RCC_CFGR_PPRE_NODIV,
+		.adcpre = RCC_CFGR_ADCPRE_DIV8,
+		.use_hse = false,
+		.ahb_frequency	= 72000000,
+		.apb1_frequency = 36000000,
+		.apb2_frequency = 72000000,
+	},
 };
 
 const struct rcc_clock_scale rcc_hse8_configs[] = {
