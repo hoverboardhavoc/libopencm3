@@ -499,6 +499,18 @@ void rcc_set_adcpre(uint32_t adcpre)
 {
 	RCC_CFGR = (RCC_CFGR & ~RCC_CFGR_ADCPRE) |
 			(adcpre << RCC_CFGR_ADCPRE_SHIFT);
+	/* GD32F1x0 has a separate ADC clock SOURCE select bit in CFGR3
+	 * (called ADCSEL in the GD32 SPL, ADCSW here following the
+	 * STM32F0 family naming):
+	 *   ADCSW=0 (default after reset): CK_ADC is the divided IRC28M
+	 *   ADCSW=1: CK_ADC is the divided APB2 clock
+	 * After reset ADCSW=0 and IRC28MEN=0, so the ADC has no clock and
+	 * any calibration / conversion attempt hangs. STM32F1 has no
+	 * equivalent bit, so the inherited stm32 ADC drivers don't touch
+	 * it. Set ADCSW here to route the prescaler the caller just chose
+	 * to the ADC. Matches GD32 SPL's `rcu_adc_clock_config(APB2_DIV*)`
+	 * which writes both CFGR.ADCPRE and CFGR3.ADCSW. */
+	RCC_CFGR3 |= RCC_CFGR3_ADCSW;
 }
 
 /*---------------------------------------------------------------------------*/
