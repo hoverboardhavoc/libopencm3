@@ -10,6 +10,7 @@ option(
 		'stm32f7',
 		'stm32l4',
 		'lm4f',
+		'gd32f1x0',
 	],
 	value: 'all',
 	description: 'The hardware platform you wish to target'
